@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
-export class HeaderauthMiddleware implements NestMiddleware {
+export class TokenMiddleware implements NestMiddleware {
   private accessKey: string;
   constructor(configService: ConfigService) {
     this.accessKey = configService.get('API_ACCESS_KEY');
@@ -11,7 +11,7 @@ export class HeaderauthMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const headerApiAccessKey = req.headers['api-access-key'];
     if (headerApiAccessKey !== this.accessKey) {
-      throw new ForbiddenException('Acesso Negado');
+      throw new ForbiddenException('Acesso Negado, verifique suas credencias');
     }
     next();
   }
