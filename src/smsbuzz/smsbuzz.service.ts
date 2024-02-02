@@ -36,6 +36,11 @@ export class SmsbuzzService {
   }
 
   async sendSms(sendSms: SendSmsDTO) {
+    console.log('send SMS', sendSms);
+    
+    const {SenderName, Destinations, Text, IsUnicode } = sendSms;
+    const cleanDestinations = Destinations.replace('+', '').replace(/\s/g, '')
+    
     const { AccessToken } = await this.login();
 
     if (!AccessToken) {
@@ -45,7 +50,14 @@ export class SmsbuzzService {
     try {
       const response = await axios.post(
         this.apiUrlSmsBuzz + '/sms/send',
-        sendSms,
+        {
+            "Destinations": [
+                cleanDestinations
+            ],
+            SenderName,
+            Text,
+            IsUnicode
+        },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -61,6 +73,7 @@ export class SmsbuzzService {
   }
 
   async sendVoice(sendVoice: SendVoiceDTO) {
+    console.log('send Voice', sendVoice);
     const { AccessToken } = await this.login();
 
     if (!AccessToken) {

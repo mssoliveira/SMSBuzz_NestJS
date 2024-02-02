@@ -5,7 +5,7 @@ export class SendSmsDTO {
   SenderName: string;
 
   @IsNotEmpty({ message: 'Destinations não deve estar vazio' })
-  Destinations: string[];
+  Destinations: string
 
   @IsNotEmpty({ message: 'Text não deve estar vazio' })
   Text: string;
