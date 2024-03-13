@@ -76,6 +76,9 @@ export class SmsbuzzService {
     console.log('send Voice', sendVoice);
     const { AccessToken } = await this.login();
 
+    const { Destinations, Language, TTSVoice, Text } = sendVoice;
+    const cleanDestinations = Destinations.replace('+', '').replace(/\s/g, '')
+
     if (!AccessToken) {
       throw new BadRequestException('Erro ao realizar login');
     }
@@ -83,7 +86,14 @@ export class SmsbuzzService {
     try {
       const response = await axios.post(
         this.apiUrlSmsBuzz + '/call/send',
-        sendVoice,
+        {
+          "Destinations": [
+              cleanDestinations
+          ],
+          Text,
+          Language,
+          TTSVoice
+      },
         {
           headers: {
             Authorization: `Bearer ${AccessToken}`,
