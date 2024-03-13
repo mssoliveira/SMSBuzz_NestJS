@@ -72,7 +72,7 @@ export class SmsbuzzService {
     }
   }
 
-  async sendVoice(sendVoice: SendVoiceDTO) {
+      async sendVoice(sendVoice: SendVoiceDTO) {
     console.log('send Voice', sendVoice);
     const { AccessToken } = await this.login();
 
@@ -83,20 +83,22 @@ export class SmsbuzzService {
       throw new BadRequestException('Erro ao realizar login');
     }
 
+    const bodyRaw = new FormData();
+    bodyRaw.append('Destinations', cleanDestinations);
+    bodyRaw.append('Text', Text);
+    bodyRaw.append('Language',Language);
+    bodyRaw.append('TTSVoice', TTSVoice);
+    
+    console.log(bodyRaw);
+
     try {
       const response = await axios.post(
         this.apiUrlSmsBuzz + '/call/send',
-        {
-          "Destinations": [
-              cleanDestinations
-          ],
-          Text,
-          Language,
-          TTSVoice
-      },
+        bodyRaw,
         {
           headers: {
             Authorization: `Bearer ${AccessToken}`,
+            "Content-Type": 'multipart/form-data'
           },
         },
       );
