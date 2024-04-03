@@ -68,6 +68,7 @@ export class SmsbuzzService {
 
       return response.data;
     } catch (error) {
+      console.log('erro:', error)
       throw new BadRequestException(error.message);
     }
   }
@@ -105,6 +106,7 @@ export class SmsbuzzService {
 
       return response.data;
     } catch (error) {
+      console.log('erro:', error)
       throw new BadRequestException(error.message);
     }
   }
